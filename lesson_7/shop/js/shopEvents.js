@@ -3,20 +3,35 @@
 'use strict';
 // функция, вызываемая после загрузки страницы и вызывающая другие функции-обработчики.
 function init() {
-    var images = document.getElementsByTagName("img");
-    for (var image of images) {
-        image.addEventListener('click', changeToBig);
+    for (var image of document.getElementsByTagName("img")) {
+        checkClickListener(image, changeToBig);
     }
-    var buttons = document.getElementsByTagName("button");
-    for (var button of buttons) {
-        button.addEventListener('click', putToBasket);
+    for (var button of document.getElementsByClassName("buy_button")) {
+        checkClickListener(button, putToBasket);
     }
-    var bigImg = document.getElementById("big_picture_div");
-    bigImg.addEventListener('click', backToSmall);
-    var arrowLeft = document.getElementById("arrow_left_div");
-    arrowLeft.addEventListener('click', scrollLeft);
-    var arrowRight = document.getElementById("arrow_right_div");
-    arrowRight.addEventListener('click', scrollRight);
+    checkClickListener(document.getElementById("big_picture_div"), backToSmall);
+    checkClickListener(document.getElementById("arrow_left_div"), scrollLeft);
+    checkClickListener(document.getElementById("arrow_right_div"), scrollRight);
+    checkClickListener(document.getElementById("basket_button"), nextToAddress);
+    addEventListener('keydown', scroll);
+}
+
+function nextToAddress() {
+    clearDiv("basket_div");
+    showAddress();
+    checkClickListener(document.getElementById("address_button"), nextToComment);
+}
+
+function nextToComment() {
+    clearDiv("address_div");
+    showComment();
+    checkClickListener(document.getElementById("comment_button"), nextToBasket);
+}
+
+function nextToBasket() {
+    clearDiv("comment_div");
+    showBasket();
+    checkClickListener(document.getElementById("basket_button"), nextToAddress);
 }
 // функция, убирающая большую картинку при нажатии на неё.
 function backToSmall() {
@@ -39,7 +54,7 @@ function putToBasket(event) {
     clearDiv(basketSection.name + '_sum');
     var productToBuy = cloneObject(catalog.list[event.target.id - 1]);
     addTo(basket.list, productToBuy.vendorCode, productToBuy.name, productToBuy.price, productToBuy.smallImgSrc, productToBuy.bigImgSrc);
-    basketInfo();
+    basketFullInfo();
 }
 // функция, изменяющая путь к картинке при нажатии на стрелки
 function changeSrc(source, left) {
@@ -74,7 +89,18 @@ function scrollRight() {
     var bigPicSrc = bigImage.src;
     bigImage.src = changeSrc(bigPicSrc, false);
     bigImage.onerror = jumpOverToRight;
-} 
+}
+// функция, прокручивающая фото при нажатии на клавиши "Влево" и "Вправо"
+function scroll(e) {
+    switch (e.keyCode) {
+    case 37: // Клавиша "Влево"
+        scrollLeft()
+        break;
+    case 39: // Клавиша "Вправо"
+        scrollRight();
+        break;
+    }
+}
 // функция, вызываемая при ошибке загрузки фото, которая изменяет путь и возвращает предыдущее фото
 function jumpOverToLeft() {
     var bigImage = document.getElementById('big_picture');

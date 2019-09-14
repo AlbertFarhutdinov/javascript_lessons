@@ -1,4 +1,4 @@
-/* Данный файл содержит функции, используемые для создания сайта интрнет-магазина. */
+/* Данный файл содержит функции, используемые для создания сайта интернет-магазина. */
 'use strict';
 // функция для клонирования объекта с целью последующего изменения объекта-клона
 function cloneObject(oldObject) {
@@ -17,7 +17,7 @@ function addTo(array, productCode, productName, productPrice, smallSrc, bigSrc) 
     }
     // ищем артикул нового продукта в массиве артикулов. Если такой продукт уже существует, увеличиваем его количество на 1
     if (codes.indexOf(productCode) != -1) {
-        array[codes.indexOf(productCode)].number++
+        array[codes.indexOf(productCode)].number++;
     }
     // если такого продукта нет, добавляем новый
     else {
@@ -55,19 +55,15 @@ function addTableData(className, idName, parentRow, innerData, width, height) {
     basketData.innerHTML = innerData;
     setTableStyle(basketData, width, height);
 }
-// функция, устанавливающая стиль для данных таблицы корзины
-function setTableStyle(element, width, height) {
-    element.style.border = borderStyle;
-    element.style.width = width;
-    element.style.height = height;
-    element.style.textAlign = 'center';
-    element.style.fontSize = sizes.parTextSize;
+// функция, возвращающая информацию о товарах в корзине (кратко)
+function basketShortInfo() {
+    basketSection.sum.innerHTML = ('<p>В корзине: ' + basket.countBasketLength() + ' товаров на сумму ' + basket.countBasketPrice() + ' рублей.</p>');
 }
-// функция, возвращающая информацию о товарах в корзине
-function basketInfo() {
-    basketSum.innerHTML = ('<p>В корзине: ' + basket.list.length + ' товаров на сумму ' + basket.countBasketPrice() + ' рублей.</p>');
+// функция, возвращающая информацию о товарах в корзине (полностью)
+function basketFullInfo() {
+    basketShortInfo();
     for (var element of basket.list) {
-        var basketRow = createAndAppend('tr', basketTable, basketSection.name + '_table_row', false);
+        var basketRow = createAndAppend('tr', basketSection.table, basketSection.name + '_table_row', false);
         var commonClass = basketSection.name + '_data ' + basketSection.name + '_data_'
         addTableData(commonClass + 'code', false, basketRow, element.vendorCode, sizes.tableDataCodeWidth, sizes.tableDataHeight);
         addTableData(commonClass + 'name', false, basketRow, element.name, sizes.tableDataNameWidth, sizes.tableDataHeight);
@@ -85,4 +81,10 @@ function putImgToDiv(parrentDiv, src, id) {
 function clearDiv(id) {
     var div = document.getElementById(id);
     div.innerHTML = "";
+}
+// функция, назначающая обработчик события нажатия на элемент, если он существует
+function checkClickListener(element, listener) {
+    if (element) {
+        element.addEventListener('click', listener);
+    }
 }

@@ -1,4 +1,4 @@
-/* Данный файл предназначен для создания структуры сайта и заполнения основным содержимым. */
+/* Данный файл предназначен для создания структуры страницы каталога и заполнения основным содержимым. */
 'use strict';
 // определяем структуру каталога
 var catalogSection = cloneObject(section);
@@ -6,8 +6,8 @@ sectionStructure(catalogSection, 'catalog');
 // определяем структуру корзины
 var basketSection = cloneObject(section);
 sectionStructure(basketSection, 'basket');
-var basketSum = createAndAppend('p', basketSection.content, false, basketSection.name + '_sum');
-var basketTable = createAndAppend('table', basketSection.content, false, basketSection.name + '_table');
+basketSection.sum = createAndAppend('p', basketSection.content, false, basketSection.name + '_sum');
+basketSection.table = createAndAppend('table', basketSection.content, false, basketSection.name + '_table');
 // заполняем каталог продуктами
 var numberOfImgForOne = 3; // число картинок для одного товара
 for (var i = 0; i < 6; i++) {
@@ -29,6 +29,8 @@ var bigWindow = createAndAppend('div', catalogSection.content, false, 'big_windo
 for (var id of ['big_picture_div', 'arrow_left_div', 'arrow_right_div']) {
     var newDiv = createAndAppend('div', bigWindow, false, id);
 }
+setArrowStyle(document.getElementById('arrow_left_div'));
+setArrowStyle(document.getElementById('arrow_right_div'));
 for (var item = 0; item < catalog.list.length; item++) {
     var catalogProduct = createAndAppend('div', catalogSection.content, catalogSection.name + '_product', false);
     var catalogImage = createAndAppend('img', catalogProduct, catalogSection.name + '_image', (item + 1) + '.1');
@@ -40,11 +42,13 @@ for (var item = 0; item < catalog.list.length; item++) {
     var buyButton = createAndAppend('button', catalogProduct, 'buy_button', (item + 1));
     buyButton.innerHTML = 'Купить';
 }
+setCatalogStyle(catalogSection);
 // работаем с содержимым корзины
 basketSection.header.innerHTML = 'Корзина';
 if (basket.list.length == 0) {
-    basketSum.innerHTML = 'Корзина пуста';
+    basketSection.sum.innerHTML = 'Корзина пуста';
 }
 else {
-    basketInfo();
+    basketFullInfo();
 }
+setBasketStyle(basketSection);

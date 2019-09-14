@@ -1,5 +1,7 @@
 /* Данный файл содержит все объекты и глобальные переменные, используемые для создания сайта интрнет-магазина. */
 'use strict';
+
+
 // объект "Продукт"
 var product = {
     vendorCode: 0 // артикул - код продукта
@@ -32,6 +34,13 @@ var basket = {
         }
         return sum;
     }
+    , countBasketLength: function () {
+        var length = 0;
+        for (var element of this.list) {
+            length += element.number;
+        }
+        return length;
+    }
 };
 // объект "Раздел страницы"
 var section = {
@@ -60,6 +69,8 @@ var sizes = {
     , arrowsHeight: '64px'
     , productMargin: '30px'
 };
+// стиль границы
+var borderStyle = sizes.borderWidth + ' solid black';
 // массив продуктов каталога
 var productNames = ['Смартфон Xiaomi MI A3 128 ГБ синий'
                     , 'Ноутбук Acer Extensa EX2519-10RW черный'
