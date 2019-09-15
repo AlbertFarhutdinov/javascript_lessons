@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        // Выведет undefined, так как условие для if ложное, а значит переменной a не будет присвоено значение
+        if (!("a" in window)) {
+            var a = 1;
+        }
+        alert(a);
+    </script>
+    <script>
+        // Выведет undefined, так как x не определено
+        var b = function a(x) {
+            x && a(--x);
+        };
+        alert(a);
+    </script>
+    <script>
+        // выведет саму функцию, так как в alert пишем a вместо a().
+        function a(x) {
+            return x * 2;
+        }
+        var a;
+        alert(a);
+    </script>
+    <script>
+        // Выведет 10. arguments - массив аргументов, передаваемых функции. В данном случае изначально arguments[2] = a. Сначала a = 3, но затем мы переопределяем arguments[2] и поэтому a = arguments[2] = 10
+        function b(x, y, a) {
+            arguments[2] = 10;
+            alert(a);
+        }
+        b(1, 2, 3);
+    </script>
+    <script>
+        'use strict'
+        // В строгом режиме выведет null. В нестрогом выведет [object Window], так как null заменяется на глобальный объект window 
+        function a() {
+            alert(this);
+        }
+        a.call(null);
+    </script>
+</head>
+
+<body> </body>
+
+</html>
